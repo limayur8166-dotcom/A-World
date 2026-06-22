@@ -1,0 +1,23 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Copy Files
+        run: |
+          sudo rsync -av --delete ./ /var/www/html/
+
+      - name: Set Permissions
+        run: |
+          sudo chown -R www-data:www-data /var/www/html
+          sudo chmod -R 755 /var/www/html
